@@ -1,0 +1,31 @@
+{
+  "name": "angularjs-app-template",
+  "version": "1.0.0",
+  "homepage": "https://github.com/angularjs-app-template",
+  "authors": [
+    "Michal Krawczak"
+  ],
+  "description": "Template AngularJS Application",
+  "main": "dist/js/app.js",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "dist/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.2",
+    "angular": "~1.2.28",
+    "angular-route": "~1.2.28",
+    "angular-cookies": "~1.2.28",
+    "angular-resource": "~1.2.28",
+    "angular-bootstrap": "~0.12.1"
+  }
+}
