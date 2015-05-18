@@ -22,12 +22,11 @@ module.exports = function (grunt) {
                 }
             },
 
-            // MOVE EACH TEMPLATE FILE TO ONE JS FILE WITH ALL TEMPLATES
-            html2js: {
+            html2js: { // Move all template files to one JS file
                 commonDirectives: {
                     options: {
-                        module: 'sample.directives.templates',      // ANGULAR MODULE NAME
-                        base: 'src/app/directives/templates',  // REMOVE PATH FROM FILE
+                        module: 'sample.directives.templates',
+                        base: 'src/app/directives/templates',
                         htmlmin: {
                             collapseWhitespace: true,
                             removeComments: true
@@ -36,13 +35,12 @@ module.exports = function (grunt) {
                     dest: 'tmp/commonDirectives.js',
                     src: [
                         'src/app/directives/*/*.html'
-
                     ]
                 },
                 sample: {
                     options: {
-                        module: 'sample.templates',      // ANGULAR MODULE NAME
-                        base: 'src/app/modules',  // REMOVE PATH FROM FILE
+                        module: 'sample.templates',
+                        base: 'src/app/modules',
                         htmlmin: {
                             collapseWhitespace: true,
                             removeComments: true
@@ -51,7 +49,6 @@ module.exports = function (grunt) {
                     dest: 'tmp/sampleTemplates.js',
                     src: [
                         'src/app/modules/*/templates/*.html'
-
                     ]
                 }
             },
@@ -78,7 +75,7 @@ module.exports = function (grunt) {
                 }
             },
 
-            // COPY FILES FROM DESIGN DIRECTORY TO DIST DIRECTORY
+            // Copy file from src directory to dist
             copy: {
                 index: {
                     files: [
@@ -124,7 +121,6 @@ module.exports = function (grunt) {
                 }
             },
 
-            // GROUP FILES IN EACH MODULE
             common: {
                 directives: [
                     'src/app/directives/*.js',
@@ -147,8 +143,6 @@ module.exports = function (grunt) {
             },
             configuration: {},
 
-
-            // CONCAT GROUPED FILES IN SEPARATED FILES
             concat: {
                 dist: {
                     files: {
@@ -167,10 +161,9 @@ module.exports = function (grunt) {
                 }
             },
 
-            // WATCH CHANGES
             watch: {
                 options: {
-                    livereload: true //works with Chrome LiveReload extension. See: https://github.com/gruntjs/grunt-contrib-watch
+                    livereload: true
                 },
                 files: [
                     'src/*.html',
@@ -188,19 +181,6 @@ module.exports = function (grunt) {
             clean: {
                 dist: ['tmp']
             },
-            //replace: {
-            //	dist: {
-            //		options: {
-            //			variables: {
-            //				version: '<%= pkg.version %>',
-            //				timestamp: '<%= (new Date()).toString() %>'
-            //			}
-            //		},
-            //		files: {
-            //			'tmp/intro.js': 'src/template-header.js'
-            //		}
-            //	}
-            //},
 
             connect: {
                 dev: {
@@ -215,13 +195,10 @@ module.exports = function (grunt) {
         }
     );
 
-    // DEFAULT TASKS
-    //grunt.registerTask('default', ['html2js', 'replace:dist', 'concat', 'clean']);
     grunt.registerTask('default', ['html2js', 'concat', 'clean']);
     grunt.registerTask('build', ['default', 'less', 'copy']);
     grunt.registerTask('watch', ['default', 'less', 'copy:index']);
     grunt.registerTask('start', ['copy', 'connect']);
-
 
     grunt.loadNpmTasks('grunt-replace');
     grunt.loadNpmTasks('grunt-contrib-clean');
