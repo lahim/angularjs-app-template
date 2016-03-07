@@ -23,30 +23,30 @@ module.exports = function (grunt) {
             },
 
             html2js: { // Move all template files to one JS file
-                commonDirectives: {
+                //commonDirectives: {
+                //    options: {
+                //        module: 'sample.directives.templates',
+                //        base: 'src/app/directives/templates',
+                //        htmlmin: {
+                //            collapseWhitespace: true,
+                //            removeComments: true
+                //        }
+                //    },
+                //    dest: 'tmp/commonDirectives.js',
+                //    src: [
+                //        'src/app/directives/*/*.html'
+                //    ]
+                //},
+                modules: {
                     options: {
-                        module: 'sample.directives.templates',
-                        base: 'src/app/directives/templates',
-                        htmlmin: {
-                            collapseWhitespace: true,
-                            removeComments: true
-                        }
-                    },
-                    dest: 'tmp/commonDirectives.js',
-                    src: [
-                        'src/app/directives/*/*.html'
-                    ]
-                },
-                sample: {
-                    options: {
-                        module: 'sample.templates',
+                        module: 'angapp.templates',
                         base: 'src/app/modules',
                         htmlmin: {
                             collapseWhitespace: true,
                             removeComments: true
                         }
                     },
-                    dest: 'tmp/sampleTemplates.js',
+                    dest: 'tmp/angappTemplates.js',
                     src: [
                         'src/app/modules/*/templates/*.html'
                     ]
@@ -69,7 +69,7 @@ module.exports = function (grunt) {
                         optimization: 2
                     },
                     files: {
-                        "dist/css/sample.min.css": "src/less/sample.less",
+                        "dist/css/angapp.min.css": "src/less/angapp.less",
                         "dist/css/login.min.css": "src/less/login.less"
                     }
                 }
@@ -101,7 +101,7 @@ module.exports = function (grunt) {
                         },
                         {
                             expand: true,
-                            cwd: 'src/lib/',
+                            cwd: 'bower_components/',
                             src: ['**'],
                             dest: 'dist/lib/'
                         },
@@ -122,10 +122,10 @@ module.exports = function (grunt) {
             },
 
             common: {
-                directives: [
-                    'src/app/directives/*.js',
-                    'src/app/directives/*/*.js'
-                ],
+                //directives: [
+                //    'src/app/directives/*.js',
+                //    'src/app/directives/*/*.js'
+                //],
                 services: [
                     'src/app/services/*.js'
                 ],
@@ -136,11 +136,13 @@ module.exports = function (grunt) {
                     'src/app/translations/*.js'
                 ]
             },
+
             app: {
                 all: [
                     'src/app/modules/*/*/*.js'
                 ]
             },
+
             configuration: {},
 
             concat: {
@@ -150,12 +152,12 @@ module.exports = function (grunt) {
                             'tmp/intro.js',
                             'src/app/app.js',
                             '<%= common.translations %>',
-                            '<%= common.directives %>',
+                            //'<%= common.directives %>',
                             '<%= common.services %>',
                             '<%= common.filters %>',
                             '<%= app.all %>',
-                            'tmp/commonDirectives.js',
-                            'tmp/sampleTemplates.js'
+                            //'tmp/commonDirectives.js',
+                            'tmp/angappTemplates.js'
                         ]
                     }
                 }

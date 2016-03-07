@@ -2,7 +2,7 @@
  * Created by lahim on 12/03/15.
  */
 
-angular.module("sample.services")
+angular.module("angapp.services")
     .factory(
     "profileFactory",
     [

@@ -2,7 +2,7 @@
  * Created by lahim on 09/03/15.
  */
 
-angular.module("sample.controllers")
+angular.module("angapp.controllers")
     .controller("AboutCtrl",
     [
         "$scope",

@@ -1,16 +1,16 @@
 "use strict";
 
-angular.module("sample", [
+angular.module("angapp", [
     "ngRoute",
     "ngResource",
     "ngCookies",
     "ui.bootstrap",
-    "sample.controllers",
-    "sample.services",
-    //"sample.directives",
-    //"sample.directives.templates",
-    "sample.templates",
-    //"sample.filters"
+    "angapp.controllers",
+    "angapp.services",
+    //"angapp.directives",
+    //"angapp.directives.templates",
+    "angapp.templates",
+    //"angapp.filters"
 ])
     .config([
         "$provide", "$routeProvider",
@@ -45,19 +45,22 @@ angular.module("sample", [
                 .when("/dashboard", { // --------/ dashboard urls /--------
                     templateUrl: "dashboard/templates/dashboard.html",
                     controller: "DashboardCtrl",
-                    auth: true,
+                    //auth: true,
+                    auth: false,
                     pageName: "dashboard"
                 })
                 .when("/about", { // --------/ about urls /--------
                     templateUrl: "about/templates/about.html",
                     controller: "AboutCtrl",
-                    auth: true,
+                    //auth: true,
+                    auth: false,
                     pageName: "about"
                 })
                 .when("/contact", { // --------/ contact urls /--------
                     templateUrl: "contact/templates/contact.html",
                     controller: "ContactCtrl",
-                    auth: true,
+                    //auth: true,
+                    auth: false,
                     pageName: "contact"
                 })
                 .otherwise({ // --------/ otherwise url /--------
@@ -73,6 +76,9 @@ angular.module("sample", [
         "$timeout",
         "profileFactory",
         function ($rootScope, $http, $cookies, $route, $location, $timeout, profileFactory) {
+
+            $rootScope.loggedIn = true;  // fixme: remove this line if you added an API auth endpoint!
+
             $rootScope.$on("$routeChangeStart", function (event, next, current) {
                 if (next) {
                     if (next.auth && !$rootScope.loggedIn) {
@@ -161,8 +167,8 @@ function validationErrorsHandler(errors) {
 }
 
 // COMMON MODULES
-angular.module("sample.services", []);
-//angular.module("sample.directives", []);
-angular.module("sample.modals", []);
-//angular.module("sample.filters", []);
-angular.module("sample.controllers", []);
+angular.module("angapp.services", []);
+//angular.module("angapp.directives", []);
+angular.module("angapp.modals", []);
+//angular.module("angapp.filters", []);
+angular.module("angapp.controllers", []);
