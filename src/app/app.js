@@ -1,112 +1,117 @@
 "use strict";
 
 angular.module("angapp", [
-    "ngRoute",
-    "ngResource",
-    "ngCookies",
-    "ui.bootstrap",
-    "angapp.controllers",
-    "angapp.services",
-    //"angapp.directives",
-    //"angapp.directives.templates",
-    "angapp.templates",
-    //"angapp.filters"
-])
-    .config([
-        "$provide", "$routeProvider",
-        function ($provide, $routeProvider) {
-            $provide.factory("appConfig", function () {
-                var getApiUrl = function () {
-                    return "http://localhost:8000/api/1.0/";
-                };
+        "ui.router",
+        "ngResource",
+        "ngCookies",
+        "ui.bootstrap",
+        "angapp.controllers",
+        "angapp.services",
+        //"angapp.directives",
+        //"angapp.directives.templates",
+        "angapp.templates",
+        //"angapp.filters"
+    ])
+    .value(
+        'appConfig',
+        function () {
+            var getApiUrl = function () {
+                return "http://localhost:8000/api/1.0/";
+            };
 
-                var getTokenUrl = function () {
-                    if (typeof baseURL === "undefined") {
-                        return "/token/";
-                    }
-                    return baseURL + "/token/ ";
-                };
-
-                return {
-                    apiUrl: getApiUrl(),
-                    tokenUrl: getTokenUrl()
+            var getTokenUrl = function () {
+                if (typeof baseURL === "undefined") {
+                    return "/token/";
                 }
-            });
+                return baseURL + "/token/ ";
+            };
 
-            $routeProvider
-                .when("/login", { // --------/ login & registration urls /--------
+            return {
+                apiUrl: getApiUrl(),
+                tokenUrl: getTokenUrl()
+            }
+        }()
+    )
+    .config([
+        "$stateProvider", "$urlRouterProvider",
+        function ($stateProvider, $urlRouterProvider) {
+            $urlRouterProvider
+                .otherwise("dashboard");
+
+            $stateProvider
+                .state("login", {
+                    url: "/login",
                     templateUrl: "login/templates/login.html",
-                    controller: "LoginCtrl"
+                    controller: "LoginCtrl",
+                    pageName: "login"
                 })
-                .when("/logout", {
+                .state("logout", {
+                    url: "/logout",
                     templateUrl: "login/templates/logout.html",
-                    controller: "LogoutCtrl"
+                    controller: "LogoutCtrl",
+                    pageName: "logout"
                 })
-                .when("/dashboard", { // --------/ dashboard urls /--------
+                .state("dashboard", {
+                    url: "/dashboard",
                     templateUrl: "dashboard/templates/dashboard.html",
                     controller: "DashboardCtrl",
-                    //auth: true,
-                    auth: false,
+                    auth: true,
                     pageName: "dashboard"
                 })
-                .when("/about", { // --------/ about urls /--------
+                .state("about", {
+                    url: "/about",
                     templateUrl: "about/templates/about.html",
                     controller: "AboutCtrl",
-                    //auth: true,
-                    auth: false,
+                    auth: true,
                     pageName: "about"
                 })
-                .when("/contact", { // --------/ contact urls /--------
+                .state("contact", {
+                    url: "/contact",
                     templateUrl: "contact/templates/contact.html",
                     controller: "ContactCtrl",
-                    //auth: true,
-                    auth: false,
+                    auth: true,
                     pageName: "contact"
-                })
-                .otherwise({ // --------/ otherwise url /--------
-                    redirectTo: "/dashboard"
                 });
         }])
     .run([
         "$rootScope",
+        "$state",
         "$http",
         "$cookies",
-        "$route",
         "$location",
-        "$timeout",
-        "profileFactory",
-        function ($rootScope, $http, $cookies, $route, $location, $timeout, profileFactory) {
+        function ($rootScope, $state, $http, $cookies, $location) {
 
-            $rootScope.loggedIn = true;  // fixme: remove this line if you added an API auth endpoint!
+            //$rootScope.loggedIn = true;  // fixme: remove this line if you added an API auth endpoint!
 
-            $rootScope.$on("$routeChangeStart", function (event, next, current) {
-                if (next) {
-                    if (next.auth && !$rootScope.loggedIn) {
+            $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
+                if (toState) {
+                    if (toState.auth && !$rootScope.loggedIn) {
                         console.log("token", $cookies.token);
-                        console.log(next);
+                        console.log(toState);
 
                         if ($cookies.token) {
                             $http.defaults.headers.common["Authorization"] = "Token " + $cookies.token;
 
                             // todo: add a function which will be responsible for loading a user profie data - below you can find an example of use a profileFactory
-                            profileFactory.get().$promise.then(
-                                function (result) {
-                                    $rootScope.user = result;
-                                    $rootScope.loggedIn = true;
-                                }, function (errors) {
-                                    console.log(errors);
-                                    $http.defaults.headers.common["Authorization"] = undefined;
-                                    $location.path("/login");
-                                }
-                            );
+                            //$urlRouterProvider.get().$promise.then(
+                            //    function (result) {
+                            //        $rootScope.user = result;
+                            //       urlRouterProvider
+                            //    }, function (errors) {
+                            //        console.log(errors);
+                            //        $http.defaults.headers.common["Authorization"] = undefined;
+                            //        $location.path("/login");
+                            //    }
+                            //);
 
                         } else {
-                            $location.path("/login");
+                            event.preventDefault();
+                            $state.go('login');
                         }
                     }
 
-                    if (next.pageName) {
-                        $rootScope.pageName = next.pageName;
+                    if (toState.pageName) {
+                        $rootScope.pageName = toState.pageName;
                     } else {
                         $rootScope.pageName = "";
                     }

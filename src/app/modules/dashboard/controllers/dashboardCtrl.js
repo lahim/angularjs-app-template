@@ -7,7 +7,8 @@ angular.module("angapp.controllers")
     [
         "$scope",
         "$rootScope",
-        function ($scope, $rootScope) {
+        "appConfig",
+        function ($scope, $rootScope, appConfig) {
             $scope.message = "Dashboard page was loaded successfully";
         }
     ]
